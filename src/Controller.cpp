@@ -13,76 +13,83 @@ int Controller::getKeyState()
 	
 	if (_kbhit())
 	{
-		    
-		switch (_getch())
+		int KeyState = (unsigned int) _getch();
+
+		switch (KeyState)
 		{
 
-		case VK_UP:
+		case 72:
 			return 1;
 
 		case'w':
 			return 1;
 
-		case VK_DOWN:
+		case 80:
 			return 2;
 
 		case's':
 			return 2;
 
-		case VK_LEFT:
+		case 75:
 			return 3;
 
 		case 'a':
 			return 3;
 
-		case VK_RIGHT:
+		case 77:
 			return 4;
 
 		case 'd':
 			return 4;
 
-		case VK_SPACE:
+		case 32:
 			return 5;
 
 		case 'z':
 			return 5;
 
-		case VK_ESCAPE:
+		case 27:
 			return 6;
 
 		default:
-			break;
+			return 7;
 		
 		}
 	
 	}
-
+	else
+	{
+		return 7;
+	}
 }
 
 
 void Controller::start()
 {
 
+	std::cout << "W, A, S, D + SPACE\n OR \nUP, LEFT, RIGHT, DOWN + SPACE\n";
+	system("pause");
+
 	_model->firstCreateTanks();
 	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-	int temp = 0;
-	while (temp != 6)
-	{
 
-		temp = getKeyState();
-		_model->playerMovement(temp);
+	int t = 0;
+	while (t != 6)
+	{
+		t = getKeyState();
+		_model->playerMovement(t);
 		_model->aiMovement();
 		_model->bulletMovement();
 
 		if (_model->gameOver() == 6)
 		{
 
-			temp = 6;
+			t = 6;
 
 		}
 
-		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();;
-		totalTime = std::chrono::duration_cast<std::chrono::seconds> (end - start).count();
+		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+		totalTime = (unsigned int) std::chrono::duration_cast<std::chrono::seconds> (end - start).count();
 
 	}
 	
